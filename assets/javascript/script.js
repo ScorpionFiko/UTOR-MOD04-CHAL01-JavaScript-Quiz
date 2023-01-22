@@ -18,11 +18,20 @@ let correctAnswer = false;
 let currentScore = 0;
 let currentQuizDate = new Date();
 let currentQuizSaved = false;
+let currentQuizFinished = false;
 
 init();
 function init() {
-
+    // adding to existing users
+    if (localStorage.getItem("userScores") !== null) {
+        currentUserScores = JSON.parse(localStorage.getItem("userScores"));
+    }
     // setting up event listeners
+    document.getElementById("displayHighScore").onclick = function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        displayHighScore();
+    }
     // start button event listener
     startBtn.onclick = function (event) {
         event.stopPropagation();
@@ -45,6 +54,7 @@ function init() {
             if (currentQuestions.length > 0) {
                 displayQuestion();
             } else {
+                currentQuizFinished = true;
                 displayUserForm();
             }
         }
@@ -59,6 +69,7 @@ function resetQuiz() {
     currentQuizDate = new Date().getTime();
     console.log(currentQuizDate);
     currentQuizSaved = false;
+    currentQuizFinished=false;
 }
 
 // adds the styling for the QA 
@@ -170,7 +181,7 @@ function startTimer() {
         // otherwise stop the timer and display the finale page
         // TODO stop timer when user has ginished all questions
         displayQuizTimer(currentTimer);
-        if (currentTimer == 0) {
+        if (currentTimer == 0 || currentQuizFinished) {
             clearInterval(quizInterval);
             // enabling the "view high score" link
             changeHighScoreStatus(false);
@@ -260,20 +271,24 @@ function saveScore() {
         return;
     } 
     // saves to local storage
-    userScores.push({
+    currentUserScores.push({
         name: userName,
         score: currentScore, 
         datetime: currentQuizDate
     });
-    localStorage.setItem("userScore",JSON.stringify(userScores));
+    localStorage.setItem("userScores",JSON.stringify(currentUserScores));
     currentQuizSaved=true;
 }
 
 function displayHighScore() {
-    console.log("save");
     // getting any stored user scores
     if (localStorage.getItem("userScores") !== null) {
         currentUserScores = JSON.parse(localStorage.getItem("userScores"));
     }
+    // sorting the array based on user score and then by datetime if the score is equal
+    currentUserScores.sort((a,b) => ((a.score > b.score) ? -1 : ((a.score < b.score) ? 1 : ((a.datetime >= b.datetime) ? -1 : 1))));
 
+    console.log(currentUserScores);
+    
+    
 }
