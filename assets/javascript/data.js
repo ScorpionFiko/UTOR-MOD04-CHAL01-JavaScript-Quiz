@@ -2,21 +2,21 @@ export function loadQuestions() {
     return [
         {
             quesetion: "Inside which HTML element do we put the JavaScript?",
-            answer: [
-                "Stefan",
-                "George",
-                "Stockwell",
-                "Crayton"
+            answers: [
+                "head",
+                "body",
+                "header",
+                "footer"
             ],
-            correct: 1
+            correctIndex: 1
         },
         {
             quesetion: "What is my THIS?",
-            answer: [
+            answers: [
                 "true",
                 "false"
             ],
-            correct: 2
+            correctIndex: 2
         }
     ]
 }
