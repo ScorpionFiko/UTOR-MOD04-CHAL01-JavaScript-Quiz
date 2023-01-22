@@ -65,6 +65,10 @@ h1 {
     align-items: flex-start;
 }
 
+ul {
+    padding-inline-start: 0px;
+}
+
 li {
     list-style: none;
 }
@@ -78,8 +82,10 @@ li {
     font-size: 1.2em;
     margin: 5px;
     padding: 10px;
-    border-top: 1px solid black;
+    border-top: 1px solid #a8dadc;
     width: 50vw;
+    color: #a8dadc;
+    font-style: italic;
 }
 
 footer {
@@ -90,4 +96,22 @@ footer {
     font-size: .5em;
     vertical-align: top;
     height: 15vh;
+}
+
+@media screen and (max-width: 902px) {
+    .qaPane {
+        width: 100vw;
+    }
+
+    h1 {
+        font-size: 1.25em;
+    }
+
+    .status {
+        width: 100vw;
+    }
+
+    .btn {
+        font-size: 1em;
+    }
 }
