@@ -1,6 +1,7 @@
 export function loadQuestions() {
     return [
         {
+            id: 1,
             quesetion: "Inside which HTML element do we put the JavaScript?",
             answers: [
                 "head",
@@ -8,15 +9,18 @@ export function loadQuestions() {
                 "header",
                 "footer"
             ],
-            correctIndex: 1
+            correctIndex: 1,
+            points: 5
         },
         {
+            id:2,
             quesetion: "What is my THIS?",
             answers: [
                 "true",
                 "false"
             ],
-            correctIndex: 2
+            correctIndex: 2,
+            points: 2
         }
     ]
 }
