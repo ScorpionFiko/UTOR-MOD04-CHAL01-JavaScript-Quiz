@@ -24,6 +24,10 @@
     color: #E63946;
 }
 
+.a_disabled {
+    pointer-events: none;
+}
+
 h1 {
     font-size: 2.5em;
 }

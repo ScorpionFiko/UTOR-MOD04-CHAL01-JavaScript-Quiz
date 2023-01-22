@@ -3,8 +3,10 @@ import { loadQuestions, loadUserScore } from "./data.js";
 let startBtn = document.getElementById("startQuiz");
 let quizQuestions = loadQuestions();
 let userScores = [];
-let quizTimer = 120;
-let penalty = 10;
+const quizTimer = 5;
+let currentTimer = 0;
+const penalty = 10;
+let currentPenalty = 0;
 /* testing code below */
 quizQuestions.forEach((quizQuestion, qIndex) => {
     console.log("Q" + (qIndex + 1) + ". " + quizQuestion.quesetion);
@@ -30,6 +32,8 @@ function init() {
     startBtn.onclick = function (event) {
         event.stopPropagation();
         event.preventDefault();
+        resetQuiz();
+        changeHighScoreStatus(true);
         displayQuestion();
         startTimer();
     }
@@ -43,9 +47,14 @@ function init() {
         if (userAnswer.matches("button")) {
             //checkAnswer(userAnswer);
             console.log(userAnswer);
+            displayQuestion();
         }
-
     }
+}
+
+function resetQuiz() {
+    currentTimer = quizTimer;
+    currentPenalty = 0;
 }
 
 function displayQuestion() {
@@ -56,31 +65,48 @@ function startTimer() {
     console.log("startTimer");
     var quizInterval = setInterval(function () {
         // reducing our quizTimer
-        quizTimer--;
+        currentTimer--;
         // reducing the timer by any penalties for not answering correctly
-        quizTimer -= penalty;
+        currentTimer -= currentPenalty;
         // if quizTimer > 0 then display time
         // otherwise stop the timer and display the finale page
-        displayQuizTimer(quizTimer);
-        if (quizTimer > 0) {
+        displayQuizTimer(currentTimer);
+        if (currentTimer > 0) {
             //resetting the penalty
-            //penalty=0;
+            currentPenalty = 0;
         }
         else {
             clearInterval(quizInterval);
-            // display final page
+            // enabling the "view high score" link
+            changeHighScoreStatus(false);
+            // displaing the name entry page
         }
     }, 1000);
 }
 
-function displayQuizTimer(quizTimer) {
-    if (quizTimer < 0) {
-        quizTimer = 0;
+function displayQuizTimer(currentTimer) {
+    // resetting the timer to zero if negative
+    if (currentTimer < 0) {
+        currentTimer = 0;
     }
-    let seconds = parseInt(quizTimer % 60);
-    let minutes = parseInt(quizTimer / 60);
-    document.getElementById("timer").innerHTML = 
-        "Time left: " + 
-        ((minutes >= 10 ) ? minutes : ("0" + minutes)) + ":" +
-        ((seconds >= 10 ) ? seconds : ("0" + seconds));
+    // obtaining minute and seconds in integer form to avoid decimal places
+    let seconds = parseInt(currentTimer % 60);
+    let minutes = parseInt(currentTimer / 60);
+    // displaying in format min:sec with a leading zero if under 10
+    document.getElementById("timer").innerHTML =
+        "Time left: " +
+        ((minutes < 10) ? "0" : "") + minutes + ":" +
+        ((seconds < 10) ? "0" : "") + seconds;
+}
+
+function changeHighScoreStatus(disabled) {
+    // enables or disables the "view high score" link
+    // disabled when taking the quiz
+    // enabled all other times
+    if (disabled) {
+        document.getElementById("displayHighScore").classList.add("a_disabled");
+    }
+    else {
+        document.getElementById("displayHighScore").classList.remove("a_disabled");
+    }
 }
