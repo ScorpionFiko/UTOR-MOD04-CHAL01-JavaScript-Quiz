@@ -1,0 +1,71 @@
+/* setting the font family and size for the entire document */
+* {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 16px;
+}
+
+/* setting the styling for the header section */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 75px;
+    background-color: #F1FAEE;
+}
+/* setting the styling for the elements within the header section */ 
+.header > section {
+    padding: 10px;
+    margin: 5px;
+}
+/* setting the styling for the links within the header section */
+.header a {
+    text-decoration: none;
+    color: #E63946;
+}
+
+h1 {
+    font-size: 2.5em;
+}
+
+.btn {
+    padding: 10px;
+    margin: 5px;
+    min-width: 25%;
+    background-color: #457B9D;
+    color: #F1FAEE;
+    font-size: 1.5em;
+    font-weight: 600;
+    border: 2px solid #1D3557;
+    border-radius: 6px;
+}
+
+.btn:hover {
+    background-color: #1D3557;
+
+}
+
+.qaPane {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 50%;
+    height: 100vh;
+    margin: auto;
+}
+
+.question {
+    align-items:flex-start;
+    text-align: left;
+}
+
+footer {
+    background-color: #1D3557;
+    color: #F1FAEE;
+    padding: 10px;
+    margin: 0px;
+    font-size: .5em;
+    vertical-align: top;
+    height: 15vh;
+}
