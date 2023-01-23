@@ -78,10 +78,14 @@
 /* setting the styling for the H1 elements */ 
 h1 {
     font-size: 2.5em;
+    margin: var(--margin-var);
+    padding: var(--padding-var);
   }
 /* setting up the styling for the p elements */
   p {
     font-size: 1.5em;
+    margin: var(--margin-var);
+    padding: var(--padding-var);
   }
     
 /* setting up the styling for the centralPanel */
@@ -93,8 +97,21 @@ h1 {
   width: 50vw;
   height: 100vh;
   margin: auto;
+  padding: var(--padding-var);
   justify-content: flex-start;
 }
+/* setting up the styling for the central panel header */
+#cPanelHeader {
+    margin: var(--margin-var);
+    padding: var(--padding-var);
+}
+/* setting up the styling for the central panel body */
+#cPanelBody {
+    margin: var(--margin-var);
+    padding: var(--padding-var);
+}
+
+
 /* setting up the styling for the central pane when showing the quiz questions */
 .quiz {
   text-align: left;
@@ -102,8 +119,10 @@ h1 {
   align-items: flex-start;
 }
 /* setting up styling for the UL element */
-ul {
+ol, ul {
   padding-inline-start: 0px;
+  margin: var(--margin-var);
+  padding: var(--padding-var);
 }
 /* setting up the styling for the list item */
 li {
@@ -119,6 +138,8 @@ li {
 form {
   display: flex;
   flex-direction: row;
+  margin: var(--margin-var);
+  padding: var(--padding-var);
 }
 /* setting up the styling for the input field */
 input {

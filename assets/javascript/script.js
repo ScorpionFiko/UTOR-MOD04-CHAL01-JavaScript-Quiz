@@ -3,7 +3,7 @@ import { loadQuestions } from "./data.js";
 
 // quiz settings
 const quizQuestions = loadQuestions();
-const quizTimer = 120;
+const quizTimer = 1200;
 const quizPenalty = 10;
 const quizStatusTimer = 1;
 
