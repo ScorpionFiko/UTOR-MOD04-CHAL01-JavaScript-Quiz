@@ -1,3 +1,5 @@
+// data JS containing all questions and answers
+// separate file from the rest of the JS functionality
 export function loadQuestions() {
     return [
         {
@@ -21,16 +23,6 @@ export function loadQuestions() {
             ],
             correctIndex: 2,
             points: 2
-        }
-    ]
-}
-
-export function loadUserScore() {
-    return [
-        {
-            initials: "AB",
-            difficulty: "normal",
-            score: 100
         }
     ]
 }

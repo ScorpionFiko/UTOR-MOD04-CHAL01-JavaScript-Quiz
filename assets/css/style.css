@@ -1,143 +1,201 @@
+/* setting up common styling into variables */
+:root {
+    --padding-var: 10px;
+    --margin-var: 5px;
+    --colour-header: #f1faee;
+    --colour-footer: #1d3557;
+    --colour-button: #457b9d;
+    --colour-button-disabled: #a8dadc;
+    --colour-status: #a8dadc;
+    --colour-link:#e63946;
+    --border-radius-var: 8px;
+}
 /* setting the font family and size for the entire document */
+
 * {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 16px;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-size: 16px;
 }
 
 /* setting the styling for the header section */
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    height: 75px;
-    background-color: #F1FAEE;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 75px;
+  background-color: var(--colour-header);
 }
-/* setting the styling for the elements within the header section */ 
+
+/* setting the styling for the elements within the header section */
 .header > section {
-    padding: 10px;
-    margin: 5px;
+  padding: var(--padding-var);
+  margin: var(--margin-var);
 }
+
 /* setting the styling for the links within the header section */
 .header a {
-    text-decoration: none;
-    color: #E63946;
+  text-decoration: none;
+  color: var(--colour-link);
 }
 
+/* setting the styling for the links within the header section */
 .a_disabled {
-    pointer-events: none;
+  pointer-events: none;
 }
 
+/* setting up the styling for the timer section */
+.timer {
+    color: var(--colour-footer);
+    padding: var(--padding-var);
+    margin: var(--margin-var);
+    border: 1px dashed var(--colour-footer);
+    border-radius: var(--border-radius-var);
+}
+
+/* setting up the styling for the buttons */
+.btn {
+  padding: var(--padding-var);
+  margin: var(--margin-var);
+  min-width: 25%;
+  background-color: var(--colour-button);
+  color: var(--colour-header);
+  font-size: 1.5em;
+  font-weight: 600;
+  border: 2px solid var(--colour-footer);
+  border-radius: var(--border-radius-var);
+}
+/* setting up styling for buttons when user hovers over */
+.btn:hover {
+  background-color: var(--colour-footer);
+}
+/* setting up styling for buttons when the button is disabled */
+.btn[disabled] {
+  border-color: var(--colour-button-disabled);
+  background-color: var(--colour-button-disabled);
+}
+
+/* setting the styling for the H1 elements */ 
 h1 {
     font-size: 2.5em;
-}
-
-.btn {
-    padding: 10px;
-    margin: 5px;
-    min-width: 25%;
-    background-color: #457B9D;
-    color: #F1FAEE;
+  }
+/* setting up the styling for the p elements */
+  p {
     font-size: 1.5em;
-    font-weight: 600;
-    border: 2px solid #1D3557;
-    border-radius: 6px;
-}
-
-.btn:hover {
-    background-color: #1D3557;
-
-}
-
-.qaPane {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    width: 50vw;
-    height: 100vh;
-    margin: auto;
-}
-
-.qaPane-QA {
-    text-align: start;
-    justify-content: flex-start;
-    align-items: flex-start;
-}
-
-ul {
-    padding-inline-start: 0px;
-}
-
-li {
-    list-style: none;
-}
-
-.question {
-    align-items:flex-start;
-    text-align: left;
-}
-
-form {
-    display: flex;
-    flex-direction: row;
+  }
     
+/* setting up the styling for the centralPanel */
+.centralPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 50vw;
+  height: 100vh;
+  margin: auto;
+  justify-content: flex-start;
 }
-
+/* setting up the styling for the central pane when showing the quiz questions */
+.quiz {
+  text-align: left;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+/* setting up styling for the UL element */
+ul {
+  padding-inline-start: 0px;
+}
+/* setting up the styling for the list item */
+li {
+  list-style: none;
+}
+/* setting up the list item when displaying the high score */
+.high-score {
+  list-style: auto;
+  text-align: start;
+  font-size: 1.25em;
+}
+/* setting pu the styling for the user input form */
+form {
+  display: flex;
+  flex-direction: row;
+}
+/* setting up the styling for the input field */
 input {
-    padding: 10px;
-    margin: 5px;
-    min-width: 25%;
-    font-size: 1.5em;
-    font-weight: 600;
-    border: 2px solid #1D3557;
-    border-radius: 6px;
+  padding: var(--padding-var);
+  margin: var(--margin-var);
+  min-width: 25%;
+  font-size: 1.5em;
+  font-weight: 600;
+  border: 2px solid var(--colour-footer);
+  border-radius: var(--border-radius-var);
 }
-
+/* setting up the styling for the status message that shows underneath the question once the question is answered */
 .status {
-    font-size: 1.2em;
-    margin: 5px;
-    padding: 10px;
-    border-top: 1px solid #a8dadc;
-    width: 50vw;
-    color: #a8dadc;
-    font-style: italic;
+  font-size: 1.2em;
+  margin: var(--margin-var);
+  padding: var(--padding-var);
+  border-top: 1px solid var(--colour-status);
+  width: 50vw;
+  color: var(--colour-status);
+  font-style: italic;
 }
 
+/* setting up styling for the footer */
 footer {
-    background-color: #1D3557;
-    color: #F1FAEE;
-    padding: 10px;
-    margin: 0px;
-    font-size: .5em;
-    vertical-align: top;
-    height: 15vh;
+  background-color: var(--colour-footer);
+  color: var(--colour-header);
+  padding: var(--padding-var);
+  margin: 0px;
+  font-size: 0.5em;
+  vertical-align: top;
+  height: 15vh;
 }
 
-p {
-    font-size: 1.5em;
+@media screen and (max-width: 992px) {
+/* updates the styling based on the tablet sized screen or lower */
+  .centralPane {
+    width: 100vw;
+  }
+
+  h1 {
+    font-size: 1.75em;
+  }
+
+  .status {
+    width: 100vw;
+  }
+
+  p,
+  .high-score,
+  input,
+  .btn {
+    font-size: 1.25em;
+  }
 }
 
-@media screen and (max-width: 902px) {
-    .qaPane {
+@media screen and (max-width: 560px) {
+    /* updates the styling based on the smart phone sized screen or lower */
+      .centralPanel {
         width: 100vw;
-    }
-
-    h1 {
+      }
+    
+      h1 {
         font-size: 1.25em;
-    }
-
-    .status {
+      }
+    
+      .status {
         width: 100vw;
-    }
+      }
+    
+      p,
+      .high-score,
+      input,
+      .btn {
+        font-size: 1em;
+      }
 
-    .btn {
-        font-size: 1em;
+      form {
+        flex-direction: column;
+      }
     }
-    input {
-        font-size: 1em;
-    }
-    p {
-        font-size: 1em;
-    }
-}
