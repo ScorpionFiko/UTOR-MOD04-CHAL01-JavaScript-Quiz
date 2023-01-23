@@ -3,8 +3,8 @@ import { loadQuestions } from "./data.js";
 
 // quiz settings
 const quizQuestions = loadQuestions();
-const quizTimer = 1200;
-const quizPenalty = 10;
+const quizTimer = 120;
+const quizPenalty = 15;
 const quizStatusTimer = 1;
 
 // current working variables that will be manipulated without affecting the quiz settings
@@ -153,10 +153,8 @@ function displayQuestion() {
     let ulElement = document.createElement("ul");
     currentQuestion.answers.forEach((answer, index) => {
         let liElement = document.createElement("li");
-        let btnElement = document.createElement("button");
-        btnElement.classList.add("btn");
+        let btnElement = addButton(liElement, "answer"+ (index + 1), answer);
         btnElement.setAttribute("data-index", index + 1)
-        btnElement.textContent = answer;
         liElement.appendChild(btnElement);
         ulElement.appendChild(liElement);
     });
@@ -233,10 +231,7 @@ function displayUserForm() {
     userNameInput.setAttribute("name", "userName");
     userNameInput.setAttribute("id", "userName");
     // adds the submit button
-    let submitBtn = document.createElement("button");
-    submitBtn.classList.add("btn");
-    submitBtn.setAttribute("id", "submitUserForm");
-    submitBtn.textContent = "Submit";
+    let submitBtn = addButton(cPanelBodyElement, "submitUserForm", "Submit");
     submitBtn.onclick = function (event) {
         event.stopPropagation();
         event.preventDefault();
@@ -299,34 +294,21 @@ function displayHighScore() {
     let cPanelBodyElement = document.getElementById("cPanelBody");
     cPanelBodyElement.innerHTML = "";
     // adds the list of scores
-    let highScoreList = document.createElement("ol");
-    currentUserScores.forEach(currentUserScore => {
-        let highScoreItem = document.createElement("li");
-        highScoreItem.setAttribute("class", "high-score");
-        highScoreItem.textContent = (currentUserScore.name + " - " + currentUserScore.score + " - " + currentUserScore.timeTaken +"s");
-        highScoreList.appendChild(highScoreItem);
-    });
-    cPanelBodyElement.appendChild(highScoreList);
+    createUserScoreTable(cPanelBodyElement, currentUserScores);
     // adds the go back button
-    let goBackBtn = document.createElement("button");
-    goBackBtn.classList.add("btn");
-    goBackBtn.setAttribute("id", "goBack");
-    goBackBtn.textContent = "Go Back";
+    let goBackBtn = addButton(cPanelBodyElement, "goBack", "Go Back");
     goBackBtn.onclick = function (event) {
         event.stopPropagation();
         event.preventDefault();
         location.reload();
     }
-    cPanelBodyElement.appendChild(goBackBtn);
+    
     // adds the clear score button
-    let clearScoreBtn = document.createElement("button");
-    clearScoreBtn.classList.add("btn");
-    clearScoreBtn.setAttribute("id", "clearScore");
+    let clearScoreBtn = addButton(cPanelBodyElement, "clearScore", "Clear Score");
     // disables button if no scores are there to display
     if (currentUserScores.length == 0) {
         clearScoreBtn.setAttribute("disabled", "true");
     }
-    clearScoreBtn.textContent = "Clear Score";
     clearScoreBtn.onclick = function (event) {
         event.stopPropagation();
         event.preventDefault();
@@ -334,4 +316,48 @@ function displayHighScore() {
         displayHighScore();
     }
     cPanelBodyElement.appendChild(clearScoreBtn);
+
+}
+// functions that adds button 
+// takes on three parameters 
+//  - the location where the button needs to be appended
+//  - the id, and the text
+// any additional attributes are set separately
+function addButton(location, id, text) {
+    let newButton = document.createElement("button");
+    newButton.setAttribute("id", id);
+    newButton.textContent = text;
+    location.appendChild(newButton);
+    return newButton;
+}
+
+// function to create a table displaying user scores
+function createUserScoreTable(cPanelBodyElement, currentUserScores) {
+
+    let table = document.createElement("table");
+    let theader = table.createTHead();;
+    let tbody = table.createTBody();
+    let row = theader.insertRow();
+    // adding header
+    let dataPlace = row.insertCell();
+    let dataName = row.insertCell();
+    let dataScore = row.insertCell();
+    let dataTime = row.insertCell();
+    dataPlace.textContent = "Place"
+    dataName.textContent = "User";
+    dataScore.textContent = "Score";
+    dataTime.textContent="Seconds";
+    // adding the data
+    currentUserScores.forEach((currentUserScore, index) => {
+        let dataRow = tbody.insertRow();
+        dataPlace = dataRow.insertCell();
+        dataName = dataRow.insertCell();
+        dataScore = dataRow.insertCell();
+        dataTime = dataRow.insertCell();
+        dataPlace.textContent = index+1;
+        dataName.textContent = currentUserScore.name;
+        dataScore.textContent = currentUserScore.score;
+        dataTime.textContent = currentUserScore.timeTaken;
+    });
+    cPanelBodyElement.appendChild(table);
 }
