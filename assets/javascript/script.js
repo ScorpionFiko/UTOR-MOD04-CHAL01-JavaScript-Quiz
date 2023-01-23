@@ -3,7 +3,7 @@ import { loadQuestions } from "./data.js";
 
 // quiz settings
 const quizQuestions = loadQuestions();
-const quizTimer = 120;
+const quizTimer = 1200;
 const quizPenalty = 15;
 const quizStatusTimer = 1;
 
@@ -326,6 +326,8 @@ function displayHighScore() {
 function addButton(location, id, text) {
     let newButton = document.createElement("button");
     newButton.setAttribute("id", id);
+    newButton.setAttribute("value", id);
+    newButton.setAttribute("name", id);
     newButton.textContent = text;
     location.appendChild(newButton);
     return newButton;

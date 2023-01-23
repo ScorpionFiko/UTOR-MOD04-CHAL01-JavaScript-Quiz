@@ -57,7 +57,7 @@
 button {
   padding: var(--padding-var);
   margin: var(--margin-var);
-  min-width: 25%;
+  min-width: 50vh;
   background-color: var(--colour-button);
   color: var(--colour-header);
   font-size: 1.5em;
@@ -139,6 +139,7 @@ ul {
 /* setting up the styling for the list item */
 li {
   list-style: none;
+  width: 100%;
 }
 /* setting up the list item when displaying the high score */
 .high-score {
