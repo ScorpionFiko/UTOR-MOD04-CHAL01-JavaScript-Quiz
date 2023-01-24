@@ -103,15 +103,23 @@ span {
   font-size: 100%;
 }
 /* seeting up the styling for the table with user scores */
-table, td, tr {
-    font-size: 1em;
-    margin: var(--margin-var);
-    padding: var(--padding-var);
-    width: 50vw;
+table,
+td,
+tr {
+  font-size: 1em;
+  margin: var(--margin-var);
+  padding: var(--padding-var);
+  width: 50vw;
+  white-space: pre-wrap;
+}
+
+.tfooter {
+  font-size: 0.8em;
+  text-align: start;
 }
 /* setting up the styling for the table with user scores */
 thead {
-    background-color: #a8dadc;
+  background-color: var(--colour-header);
 }
 
 /* setting up the styling for the centralPanel */
@@ -205,10 +213,10 @@ footer {
   height: var(--footer-height);
   position: absolute;
   bottom: 0;
-  width:100vw;
+  width: 100vw;
 }
 .code {
-  font-size: .8em;
+  font-size: 0.8em;
   font-family: monospace;
   font-weight: lighter;
 }

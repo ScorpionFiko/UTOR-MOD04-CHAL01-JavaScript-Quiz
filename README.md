@@ -50,10 +50,6 @@ The list of questions is housed in a separate data.js file. That way the data is
 - the position of the correct answer within the array
 - the points (in case certain questions are deemed harder - they may require higher points)
 
-Future consideration:
-
-- modify the answer array to be an array of JavaScript objects showing the answer and whether that answer is correct or not. The future prototype is part of the displayPrototype() function for any future development.
-
 ### Page Transformation:
 
 The basic layout of the central panel where the quiz questions and answer appear is this:
@@ -106,6 +102,16 @@ The quiz questions were obtained from W3 Schools website. At the time of creatin
 
 Please refer to the LICENSE in the repo.
 
-## Known Issues
+## Future Considerations
 
-N/A
+### Difficulty level
+
+An improvement for the future will be for the user to select difficulty level. The difficulty level can be one of the following:
+
+- more questions for less time
+- questions requiring more complex code analysis
+- questions having more than one correct answer
+
+### Data.js
+
+An improvement for the data.js - the quesiton/answer storage - is to modify the answer array to be an array of JavaScript objects showing the answer and whether that answer is correct or not. The future prototype is part of the displayPrototype() function.

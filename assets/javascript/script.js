@@ -93,7 +93,7 @@ function startQuizTimer() {
         } else {
             addQuizTimerStyling(true);
         }
-        if (currentTimer == 0 || currentQuizFinished) {
+        if (currentTimer <= 0 || currentQuizFinished) {
             clearInterval(quizInterval);
             addQuestionStyling(false);
             // delaying the display of the user form so that CSS changes take effect
@@ -107,8 +107,7 @@ function startQuizTimer() {
 // function for displaying quiz timer in minute:seconds format
 function displayQuizTimer(currentTimer) {
     if (currentTimer < 0) {
-        currentTimer = 0;
-        return;
+        return "0:00";
     }
     let seconds = parseInt(currentTimer % 60);
     let minutes = parseInt(currentTimer / 60);
@@ -321,6 +320,7 @@ function createHighScoreTable(cPanelBodyElement, currentUserScores) {
     let table = document.createElement("table");
     let theader = table.createTHead();;
     let tbody = table.createTBody();
+    let tfooter = table.createTFoot();
     let row = theader.insertRow();
     // adding header
     let dataPlace = row.insertCell();
@@ -330,7 +330,7 @@ function createHighScoreTable(cPanelBodyElement, currentUserScores) {
     dataPlace.textContent = "Place"
     dataName.textContent = "User";
     dataScore.textContent = "Score";
-    dataTime.textContent = "Duration\nmin:sec";
+    dataTime.textContent = "Duration *\nmin:sec";
     // adding the data
     currentUserScores.forEach((currentUserScore, index) => {
         let dataRow = tbody.insertRow();
@@ -343,6 +343,13 @@ function createHighScoreTable(cPanelBodyElement, currentUserScores) {
         dataScore.textContent = currentUserScore.score;
         dataTime.textContent = displayQuizTimer(currentUserScore.timeTaken);
     });
+    // adding footer
+    let colspan = (table.rows[0].cells.length == 0 ? 1 : table.rows[0].cells.length);
+    let footerRow = tfooter.insertRow();
+    footerRow.classList.add("tfooter");
+    dataPlace = footerRow.insertCell();
+    dataPlace.textContent = "* Duration includes any penalties";
+    dataPlace.setAttribute("colspan", colspan);
     cPanelBodyElement.appendChild(table);
 }
 // function for enabling or disabling the "view high score" link
