@@ -9,6 +9,7 @@
   --colour-status: #a8dadc;
   --colour-link: #e63946;
   --border-radius-var: 8px;
+  --footer-height: 15vh;
 }
 /* setting the font family and size for the entire document */
 
@@ -91,6 +92,10 @@ p {
   margin: var(--margin-var);
   padding: var(--padding-var);
 }
+/* setting up the styling for the p elements */
+span {
+  font-size: 100%;
+}
 /* seeting up the styling for the table with user scores */
 table, td, tr {
     font-size: 1em;
@@ -114,6 +119,7 @@ thead {
   margin: auto;
   padding: var(--padding-var);
   justify-content: flex-start;
+  padding-bottom: var(--footer-height);
 }
 /* setting up the styling for the central panel header */
 #cPanelHeader {
@@ -178,15 +184,22 @@ input {
   font-style: italic;
 }
 
+/* sets body position to relative in order to ensure the footer is always at the bottom */
+body {
+  position: relative;
+}
 /* setting up styling for the footer */
 footer {
   background-color: var(--colour-footer);
   color: var(--colour-header);
   padding: var(--padding-var);
-  margin: 150px 0 0 0;
+  margin: 50px 0 0 0;
   font-size: 0.5em;
   vertical-align: top;
-  height: 15vh;
+  height: var(--footer-height);
+  position: absolute;
+  bottom: 0;
+  width:100vw;
 }
 .code {
   font-size: .8em;

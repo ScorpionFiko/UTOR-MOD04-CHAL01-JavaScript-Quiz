@@ -4,7 +4,7 @@ import { loadQuestions  } from "./data.js";
 // quiz settings
 const quizQuestions = loadQuestions();
 const quizTimer = 90;
-const quizPenalty = 15;
+const quizPenalty = 20;
 const quizStatusTimer = 1;
 
 // current working variables that will be manipulated without affecting the quiz settings
@@ -22,6 +22,10 @@ let currentQuizFinished = false;
 // initialization function
 init();
 function init() {
+    // setting up the quizTimer and quizPenalty elements on first page
+    document.getElementById("quizTimer").innerHTML = quizTimer;
+    document.getElementById("quizPenalty").innerHTML = quizPenalty;
+
     // retrieving any stored user score data
     if (localStorage.getItem("userScores") !== null) {
         currentUserScores = JSON.parse(localStorage.getItem("userScores"));
@@ -55,7 +59,6 @@ function init() {
                 displayQuestion();
             } else {
                 currentQuizFinished = true;
-                addQAStyling(false);
                 displayUserForm();
             }
         }
@@ -175,6 +178,7 @@ function startTimer() {
         addTimerStyling(true);
         if (currentTimer == 0 || currentQuizFinished) {
             clearInterval(quizInterval);
+            addQAStyling(false);
             displayUserForm();
         } else {
             //resetting the penalty
