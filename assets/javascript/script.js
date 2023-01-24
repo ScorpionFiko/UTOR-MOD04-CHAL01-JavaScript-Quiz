@@ -1,9 +1,9 @@
 // imports the data JS with all the questions and answers
-import { loadQuestions } from "./data.js";
+import { loadQuestions  } from "./data.js";
 
 // quiz settings
 const quizQuestions = loadQuestions();
-const quizTimer = 1200;
+const quizTimer = 90;
 const quizPenalty = 15;
 const quizStatusTimer = 1;
 
@@ -51,11 +51,11 @@ function init() {
         if (userAnswer.matches("button")) {
             checkAnswer(userAnswer);
             displayStatus();
-            addQAStyling(false);
             if (currentQuestions.length > 0) {
                 displayQuestion();
             } else {
                 currentQuizFinished = true;
+                addQAStyling(false);
                 displayUserForm();
             }
         }
@@ -86,11 +86,11 @@ function addQAStyling(displayQA = false) {
 // adds the styling for the central panel for the duration of the status message
 function addStatusStyling(displayStatus = false) {
     if (displayStatus) {
-        if (!document.getElementById("status").classList.contains("status")) {
-            document.getElementById("status").classList.add("status");
+        if (!document.getElementById("statusMessage").classList.contains("status")) {
+            document.getElementById("statusMessage").classList.add("status");
         }
     } else {
-        document.getElementById("status").classList.remove("status");
+        document.getElementById("statusMessage").classList.remove("status");
 
     }
 }
@@ -109,9 +109,9 @@ function addTimerStyling(displayTimer = false) {
 function displayStatus() {
     addStatusStyling(true);
     if (correctAnswer) {
-        document.getElementById("status").innerHTML = "Correct!"
+        document.getElementById("statusMessage").innerHTML = "Correct!"
     } else {
-        document.getElementById("status").innerHTML = "Wrong!"
+        document.getElementById("statusMessage").innerHTML = "Wrong!"
     }
     // keet the status message for quizStatusTimer seconds after which, delete the message and styling
     let currentStatusTimer = quizStatusTimer;
@@ -119,7 +119,7 @@ function displayStatus() {
         currentStatusTimer--;
         if (currentStatusTimer == 0) {
             clearInterval(currentStatusTimer);
-            document.getElementById("status").innerHTML = "";
+            document.getElementById("statusMessage").innerHTML = "";
             addStatusStyling(false);
         }
     }, 1000);
@@ -136,7 +136,6 @@ function checkAnswer(userAnswer) {
         correctAnswer = false;
         currentPenalty = quizPenalty;
     }
-
 }
 // function to display a randomly selected question at a time 
 // answer options are displayed as buttons
@@ -153,8 +152,8 @@ function displayQuestion() {
     let ulElement = document.createElement("ul");
     currentQuestion.answers.forEach((answer, index) => {
         let liElement = document.createElement("li");
-        let btnElement = addButton(liElement, "answer"+ (index + 1), answer);
-        btnElement.setAttribute("data-index", index + 1)
+        let btnElement = addButton(liElement, "answer" + (index + 1), answer);
+        btnElement.setAttribute("data-index", index + 1);
         liElement.appendChild(btnElement);
         ulElement.appendChild(liElement);
     });
@@ -171,7 +170,8 @@ function startTimer() {
     var quizInterval = setInterval(function () {
         currentTimer--;
         currentTimer -= currentPenalty;
-        displayQuizTimer(currentTimer);
+        document.getElementById("timer").innerHTML =
+        "Time left: " + displayQuizTimer(currentTimer);
         addTimerStyling(true);
         if (currentTimer == 0 || currentQuizFinished) {
             clearInterval(quizInterval);
@@ -191,10 +191,7 @@ function displayQuizTimer(currentTimer) {
     let seconds = parseInt(currentTimer % 60);
     let minutes = parseInt(currentTimer / 60);
     // displaying in format min:sec with a leading zero if under 10
-    document.getElementById("timer").innerHTML =
-        "Time left: " +
-        ((minutes < 10) ? "0" : "") + minutes + ":" +
-        ((seconds < 10) ? "0" : "") + seconds;
+    return minutes + ":" + ((seconds < 10) ? "0" : "") + seconds;
 }
 // function for enabling or disabling the "view high score" link
 // disabled when taking the quiz and entering initials
@@ -302,7 +299,7 @@ function displayHighScore() {
         event.preventDefault();
         location.reload();
     }
-    
+
     // adds the clear score button
     let clearScoreBtn = addButton(cPanelBodyElement, "clearScore", "Clear Score");
     // disables button if no scores are there to display
@@ -348,7 +345,7 @@ function createUserScoreTable(cPanelBodyElement, currentUserScores) {
     dataPlace.textContent = "Place"
     dataName.textContent = "User";
     dataScore.textContent = "Score";
-    dataTime.textContent="Seconds";
+    dataTime.textContent = "Duration\nmin:sec";
     // adding the data
     currentUserScores.forEach((currentUserScore, index) => {
         let dataRow = tbody.insertRow();
@@ -356,10 +353,10 @@ function createUserScoreTable(cPanelBodyElement, currentUserScores) {
         dataName = dataRow.insertCell();
         dataScore = dataRow.insertCell();
         dataTime = dataRow.insertCell();
-        dataPlace.textContent = index+1;
+        dataPlace.textContent = index + 1;
         dataName.textContent = currentUserScore.name;
         dataScore.textContent = currentUserScore.score;
-        dataTime.textContent = currentUserScore.timeTaken;
+        dataTime.textContent = displayQuizTimer(currentUserScore.timeTaken);
     });
     cPanelBodyElement.appendChild(table);
 }

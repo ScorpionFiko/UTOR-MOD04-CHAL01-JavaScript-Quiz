@@ -21,9 +21,10 @@
 .header {
   display: flex;
   justify-content: space-between;
+  flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  height: 75px;
+  padding: var(--padding-var);
   background-color: var(--colour-header);
 }
 
@@ -34,7 +35,7 @@
 }
 
 /* setting the styling for the links within the header section */
-.header a {
+a {
   text-decoration: none;
   color: var(--colour-link);
 }
@@ -42,6 +43,7 @@
 /* setting the styling for the links within the header section */
 .a_disabled {
   pointer-events: none;
+  color: var(--colour-button-disabled);
 }
 
 /* setting up the styling for the timer section */
@@ -57,13 +59,15 @@
 button {
   padding: var(--padding-var);
   margin: var(--margin-var);
-  min-width: 50vh;
   background-color: var(--colour-button);
   color: var(--colour-header);
-  font-size: 1.5em;
+  font-size: 1.25em;
   font-weight: 600;
   border: 2px solid var(--colour-footer);
   border-radius: var(--border-radius-var);
+  min-width: 10vw;
+  overflow-wrap: anywhere;
+  white-space: pre;
 }
 /* setting up styling for buttons when user hovers over */
 button:hover {
@@ -87,15 +91,14 @@ p {
   margin: var(--margin-var);
   padding: var(--padding-var);
 }
-
+/* seeting up the styling for the table with user scores */
 table, td, tr {
     font-size: 1em;
     margin: var(--margin-var);
     padding: var(--padding-var);
-    width: 45vw;
+    width: 50vw;
 }
-
-
+/* setting up the styling for the table with user scores */
 thead {
     background-color: #a8dadc;
 }
@@ -106,8 +109,8 @@ thead {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  width: 50vw;
-  height: 100vh;
+  width: 80vw;
+  height: auto;
   margin: auto;
   padding: var(--padding-var);
   justify-content: flex-start;
@@ -180,12 +183,21 @@ footer {
   background-color: var(--colour-footer);
   color: var(--colour-header);
   padding: var(--padding-var);
-  margin: 0px;
+  margin: 150px 0 0 0;
   font-size: 0.5em;
   vertical-align: top;
   height: 15vh;
 }
+.code {
+  font-size: .8em;
+  font-family: monospace;
+  font-weight: lighter;
+}
 
+.test {
+  height: 150px;
+}
+/* styling updates based on screen size*/
 @media screen and (max-width: 992px) {
   /* updates the styling based on the tablet sized screen or lower */
   .centralPane {
@@ -207,7 +219,7 @@ footer {
     font-size: 1.25em;
   }
 }
-
+/* styling updates based on screen size*/
 @media screen and (max-width: 560px) {
   /* updates the styling based on the smart phone sized screen or lower */
   .centralPanel {
