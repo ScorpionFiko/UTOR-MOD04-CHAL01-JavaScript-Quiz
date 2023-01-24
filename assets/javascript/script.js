@@ -1,11 +1,12 @@
 // imports the data JS with all the questions and answers
-import { loadQuestions  } from "./data.js";
+import { loadQuestions } from "./data.js";
 
 // quiz settings
 const quizQuestions = loadQuestions();
 const quizTimer = 90;
 const quizPenalty = 20;
 const quizStatusTimer = 1;
+const quizTimerWarning = 20;
 
 // current working variables that will be manipulated without affecting the quiz settings
 let currentUserScores = [];
@@ -43,8 +44,8 @@ function init() {
         event.preventDefault();
         resetQuiz();
         changeHighScoreStatus(false);
+        startQuizTimer();
         displayQuestion();
-        startTimer();
     }
     // event listener on the central panel body for getting user answer
     let answerPane = document.getElementById("cPanelBody");
@@ -53,12 +54,13 @@ function init() {
         event.preventDefault();
         let userAnswer = event.target;
         if (userAnswer.matches("button")) {
-            checkAnswer(userAnswer);
+            checkQuestionAnswer(userAnswer);
             displayStatus();
             if (currentQuestions.length > 0) {
                 displayQuestion();
             } else {
                 currentQuizFinished = true;
+                addQuestionStyling(false);
                 displayUserForm();
             }
         }
@@ -75,75 +77,63 @@ function resetQuiz() {
     currentQuizFinished = false;
 }
 
-// adds the styling for the central panel when the quiz is in effect 
-function addQAStyling(displayQA = false) {
-    if (displayQA) {
-        if (!document.getElementById("centralPanel").classList.contains("quiz")) {
-            document.getElementById("centralPanel").classList.add("quiz");
+/* ...QuizTimer functions */
+// function for starting/stopping the quiz timer
+// timer start when user presses the "start quiz" button
+// tuner stops when the user completes all questions or timer runs out
+function startQuizTimer() {
+    var quizInterval = setInterval(function () {
+        currentTimer--;
+        currentTimer -= currentPenalty;
+        document.getElementById("timer").innerHTML =
+            "Time left: " + displayQuizTimer(currentTimer);
+        // colours the timer red if it is below the timer warning
+        if (currentTimer < quizTimerWarning) {
+            addQuizTimerStyling(true, true);
+        } else {
+            addQuizTimerStyling(true);
         }
-    } else {
-        document.getElementById("centralPanel").classList.remove("quiz");
-
-    }
-}
-// adds the styling for the central panel for the duration of the status message
-function addStatusStyling(displayStatus = false) {
-    if (displayStatus) {
-        if (!document.getElementById("statusMessage").classList.contains("status")) {
-            document.getElementById("statusMessage").classList.add("status");
-        }
-    } else {
-        document.getElementById("statusMessage").classList.remove("status");
-
-    }
-}
-// adds the styling for the timer for the duration of the quiz
-function addTimerStyling(displayTimer = false) {
-    if (displayTimer) {
-        if (!document.getElementById("timer").classList.contains("timer")) {
-            document.getElementById("timer").classList.add("timer");
-        }
-    } else {
-        document.getElementById("timer").classList.remove("timer");
-
-    }
-}
-// function to display status message for quizStatusTimer seconds after the user answered the question
-function displayStatus() {
-    addStatusStyling(true);
-    if (correctAnswer) {
-        document.getElementById("statusMessage").innerHTML = "Correct!"
-    } else {
-        document.getElementById("statusMessage").innerHTML = "Wrong!"
-    }
-    // keet the status message for quizStatusTimer seconds after which, delete the message and styling
-    let currentStatusTimer = quizStatusTimer;
-    let statusTimer = setInterval(function () {
-        currentStatusTimer--;
-        if (currentStatusTimer == 0) {
-            clearInterval(currentStatusTimer);
-            document.getElementById("statusMessage").innerHTML = "";
-            addStatusStyling(false);
+        if (currentTimer == 0 || currentQuizFinished) {
+            clearInterval(quizInterval);
+            addQuestionStyling(false);
+            // delaying the display of the user form so that CSS changes take effect
+            displayUserForm();
+        } else {
+            //resetting the penalty
+            currentPenalty = 0;
         }
     }, 1000);
 }
-
-// checks the data-index against the correctIndex
-// if true, sets the correctAnswer to true, increments the point count
-// otherwise: sets teh correctAnswer to false, sets the penalty
-function checkAnswer(userAnswer) {
-    if (parseInt(userAnswer.getAttribute("data-index")) === currentQuestion.correctIndex) {
-        correctAnswer = true;
-        currentScore += currentQuestion.points;
-    } else {
-        correctAnswer = false;
-        currentPenalty = quizPenalty;
+// function for displaying quiz timer in minute:seconds format
+function displayQuizTimer(currentTimer) {
+    if (currentTimer < 0) {
+        currentTimer = 0;
+        return;
+    }
+    let seconds = parseInt(currentTimer % 60);
+    let minutes = parseInt(currentTimer / 60);
+    // displaying in format min:sec with a leading zero if under 10
+    return minutes + ":" + ((seconds < 10) ? "0" : "") + seconds;
+}
+// adds the styling for the timer for the duration of the quiz
+// colours the timer red if it is below the timer warning
+function addQuizTimerStyling(displayTimer = false, displayLowTimer = false) {
+    if (displayTimer && !document.getElementById("timer").classList.contains("timer")) {
+        document.getElementById("timer").classList.add("timer");
+    }
+    if (displayTimer && displayLowTimer && !document.getElementById("timer").classList.contains("danger")) {
+        document.getElementById("timer").classList.add("danger");
+    }
+    if (!displayTimer) {
+        document.getElementById("timer").classList.remove("timer", "danger");
     }
 }
+
+/* ...Qestion functions */
 // function to display a randomly selected question at a time 
 // answer options are displayed as buttons
 function displayQuestion() {
-    addQAStyling(true);
+    addQuestionStyling(true);
     let qIndex = Math.floor(Math.random() * currentQuestions.length);
     currentQuestion = currentQuestions[qIndex];
     // setting the quesiton
@@ -165,55 +155,68 @@ function displayQuestion() {
     // remove the current quesetion from the list to avoid duplication
     currentQuestions.splice(qIndex, 1);
 }
+// adds the styling for the central panel when the quiz is in effect 
+function addQuestionStyling(displayQA = false) {
+    if (displayQA) {
+        if (!document.getElementById("centralPanel").classList.contains("quiz")) {
+            document.getElementById("centralPanel").classList.add("quiz");
+        }
+    } else {
+        document.getElementById("centralPanel").classList.remove("quiz");
 
-// function for starting/stopping the quiz timer
-// timer start when user presses the "start quiz" button
-// tuner stops when the user completes all questions or timer runs out
-function startTimer() {
-    var quizInterval = setInterval(function () {
-        currentTimer--;
-        currentTimer -= currentPenalty;
-        document.getElementById("timer").innerHTML =
-        "Time left: " + displayQuizTimer(currentTimer);
-        addTimerStyling(true);
-        if (currentTimer == 0 || currentQuizFinished) {
-            clearInterval(quizInterval);
-            addQAStyling(false);
-            displayUserForm();
-        } else {
-            //resetting the penalty
-            currentPenalty = 0;
+    }
+}
+// checks the data-index against the correctIndex
+// if true, sets the correctAnswer to true, increments the point count
+// otherwise: sets teh correctAnswer to false, sets the penalty
+function checkQuestionAnswer(userAnswer) {
+    if (parseInt(userAnswer.getAttribute("data-index")) === currentQuestion.correctIndex) {
+        correctAnswer = true;
+        currentScore += currentQuestion.points;
+    } else {
+        correctAnswer = false;
+        currentPenalty = quizPenalty;
+    }
+}
+
+/* ...Status functions */
+// function to display status message for quizStatusTimer seconds after the user answered the question
+function displayStatus() {
+    addStatusStyling(true);
+    if (correctAnswer) {
+        document.getElementById("statusMessage").innerHTML = "Correct!"
+    } else {
+        document.getElementById("statusMessage").innerHTML = "Wrong!"
+    }
+    // keet the status message for quizStatusTimer seconds after which, delete the message and styling
+    let currentStatusTimer = quizStatusTimer;
+    let statusTimer = setInterval(function () {
+        currentStatusTimer--;
+        if (currentStatusTimer == 0) {
+            clearInterval(currentStatusTimer);
+            document.getElementById("statusMessage").innerHTML = "";
+            addStatusStyling(false);
         }
     }, 1000);
 }
-// function for displaying quiz timer in minute:seconds format
-function displayQuizTimer(currentTimer) {
-    if (currentTimer < 0) {
-        currentTimer = 0;
-        return;
-    }
-    let seconds = parseInt(currentTimer % 60);
-    let minutes = parseInt(currentTimer / 60);
-    // displaying in format min:sec with a leading zero if under 10
-    return minutes + ":" + ((seconds < 10) ? "0" : "") + seconds;
-}
-// function for enabling or disabling the "view high score" link
-// disabled when taking the quiz and entering initials
-// enabled all other times; default is enabled
-function changeHighScoreStatus(enableLink = true) {
-    if (enableLink) {
-        document.getElementById("displayHighScore").classList.remove("a_disabled");
-    }
-    else {
-        document.getElementById("displayHighScore").classList.add("a_disabled");
+// adds the styling for the central panel for the duration of the status message
+function addStatusStyling(displayStatus = false) {
+    if (displayStatus) {
+        if (!document.getElementById("statusMessage").classList.contains("status")) {
+            document.getElementById("statusMessage").classList.add("status");
+        }
+    } else {
+        document.getElementById("statusMessage").classList.remove("status");
+
     }
 }
 
+/* ..UserForm functions */
 // function to display the user name or inital entry form
 function displayUserForm() {
-    // clears the timer
+    // removes the timer
     document.getElementById("timer").innerHTML = "";
-    addTimerStyling(false);
+    addQuizTimerStyling(false);
 
     document.getElementById("cPanelHeaderH1").innerHTML = "Congratulations!";
     document.getElementById("centralPanel").removeAttribute("data-id");
@@ -225,32 +228,26 @@ function displayUserForm() {
     let scoreMessage = document.createElement("p");
     scoreMessage.textContent = "Your current score is: " + currentScore;
     cPanelBodyElement.appendChild(scoreMessage);
-    // adds the input field
     let userForm = document.createElement("form");
-    let userNameInput = document.createElement("input");
-    userNameInput.setAttribute("placeholder", "Enter your name or initials");
-    userNameInput.setAttribute("name", "userName");
-    userNameInput.setAttribute("id", "userName");
+    // adds the input field
+    let userNameInput = addInput(userForm, "userName", "Enter your name or initials");
     // adds the submit button
-    let submitBtn = addButton(cPanelBodyElement, "submitUserForm", "Submit");
+    let submitBtn = addButton(userForm, "submitUserForm", "Submit");
     submitBtn.onclick = function (event) {
         event.stopPropagation();
         event.preventDefault();
-        changeHighScoreStatus(true);
-        saveScore();
+        saveUserForm();
         if (currentQuizSaved) {
+            changeHighScoreStatus(true);
             displayHighScore();
         }
     }
     // appending the children
-    userForm.appendChild(userNameInput);
-    userForm.appendChild(submitBtn);
     cPanelBodyElement.appendChild(userForm);
-
 }
 // function to save the current user score to local storage
 // name or initials are saved in upper case
-function saveScore() {
+function saveUserForm() {
     let userName = document.getElementById("userName").value.trim().toUpperCase();
     // checks to see if the user enetered data; it not, user is presented with alert
     if (userName == "") {
@@ -280,8 +277,8 @@ function saveScore() {
     currentQuizSaved = true;
 }
 
+/* ...HighScore functions */
 // function to display the existing user scores
-
 function displayHighScore() {
     // getting any stored user scores
     currentUserScores = [];
@@ -295,7 +292,7 @@ function displayHighScore() {
     let cPanelBodyElement = document.getElementById("cPanelBody");
     cPanelBodyElement.innerHTML = "";
     // adds the list of scores
-    createUserScoreTable(cPanelBodyElement, currentUserScores);
+    createHighScoreTable(cPanelBodyElement, currentUserScores);
     // adds the go back button
     let goBackBtn = addButton(cPanelBodyElement, "goBack", "Go Back");
     goBackBtn.onclick = function (event) {
@@ -317,25 +314,9 @@ function displayHighScore() {
         displayHighScore();
     }
     cPanelBodyElement.appendChild(clearScoreBtn);
-
 }
-// functions that adds button 
-// takes on three parameters 
-//  - the location where the button needs to be appended
-//  - the id, and the text
-// any additional attributes are set separately
-function addButton(location, id, text) {
-    let newButton = document.createElement("button");
-    newButton.setAttribute("id", id);
-    newButton.setAttribute("value", id);
-    newButton.setAttribute("name", id);
-    newButton.textContent = text;
-    location.appendChild(newButton);
-    return newButton;
-}
-
 // function to create a table displaying user scores
-function createUserScoreTable(cPanelBodyElement, currentUserScores) {
+function createHighScoreTable(cPanelBodyElement, currentUserScores) {
 
     let table = document.createElement("table");
     let theader = table.createTHead();;
@@ -364,3 +345,47 @@ function createUserScoreTable(cPanelBodyElement, currentUserScores) {
     });
     cPanelBodyElement.appendChild(table);
 }
+// function for enabling or disabling the "view high score" link
+// disabled when taking the quiz and entering initials
+// enabled all other times; default is enabled
+function changeHighScoreStatus(enableLink = true) {
+    if (enableLink) {
+        document.getElementById("displayHighScore").classList.remove("a_disabled");
+    }
+    else {
+        document.getElementById("displayHighScore").classList.add("a_disabled");
+    }
+}
+
+
+/* helper functions */
+// function that adds button - this prevents cluttering of the as the same lines need to be repeated for every button
+// takes on three parameters 
+//  - the location where the button needs to be appended
+//  - the id
+//  - the button text
+// any additional attributes are set separately
+function addButton(location, id, text) {
+    let newButton = document.createElement("button");
+    newButton.setAttribute("id", id);
+    newButton.setAttribute("value", id);
+    newButton.setAttribute("name", id);
+    newButton.textContent = text;
+    location.appendChild(newButton);
+    return newButton;
+}
+// function that adds input - this prevents cluttering of the as the same lines need to be repeated for every input
+// takes on three parameters 
+//  - the location where the button needs to be appended
+//  - the id
+//  - the placeholder text
+// any additional attributes are set separately
+function addInput(location, id, text) {
+    let newInput = document.createElement("input");
+    newInput.setAttribute("id", id);
+    newInput.setAttribute("placeholder", text);
+    newInput.setAttribute("name", id);
+    location.appendChild(newInput);
+    return newInput;
+}
+

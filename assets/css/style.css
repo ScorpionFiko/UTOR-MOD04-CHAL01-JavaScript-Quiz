@@ -8,6 +8,7 @@
   --colour-button-disabled: #a8dadc;
   --colour-status: #a8dadc;
   --colour-link: #e63946;
+  --colour-danger: #e63946;
   --border-radius-var: 8px;
   --footer-height: 15vh;
 }
@@ -55,6 +56,11 @@ a {
   border: 1px dashed var(--colour-footer);
   border-radius: var(--border-radius-var);
 }
+/* setting up styling when timer is low */
+.danger {
+  color: var(--colour-danger);
+  border: 1px dashed var(--colour-danger);
+}
 
 /* setting up the styling for the buttons */
 button {
@@ -68,7 +74,7 @@ button {
   border-radius: var(--border-radius-var);
   min-width: 10vw;
   overflow-wrap: anywhere;
-  white-space: pre;
+  white-space: pre-wrap;
 }
 /* setting up styling for buttons when user hovers over */
 button:hover {
